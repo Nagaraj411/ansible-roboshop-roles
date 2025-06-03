@@ -1,0 +1,80 @@
+- name: configuring catalogue server
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+  - name: Disable the default nodejs module
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: Install nodejs
+    ansible.builtin.dnf:
+      name: nodejs
+      state: present
+  
+  - name: create app directory
+    ansible.builtin.file:  # create a directory for the application
+     path: /app
+     state: directory
+
+  - name: add system user
+    ansible.builtin.user: # create a system user for the application
+      name: roboshop
+      shell: /sbin/nologin
+      home: /app
+      system: true
+
+  - name: download catalogue code
+    ansible.builtin.get_url: # download the catalogue code from the remote repository
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+      dest: /tmp/catalogue.zip
+
+  - name: unzip catalogue code
+    ansible.builtin.unarchive: # extract or unzip the downloaded zip file to the application directory
+      src: /tmp/catalogue.zip
+      dest: /app
+      remote_src: yes # this means the source file is already on the remote catalogue server
+
+  - name: install dependencies
+    community.general.npm:  # install the npm required node.js dependencies for the application
+      path: /app
+
+  - name: Copy catalogue service file
+    ansible.builtin.copy: # copy the systemd service file for the catalogue application
+      src: catalogue.service
+      dest: /etc/systemd/system/catalogue.service
+
+  - name: systemctl daemon reload
+    ansible.builtin.systemd_service: # daemon reload to recognize the new service file
+      daemon_reload: true
+
+  - name: start and enable catalogue
+    ansible.builtin.service: # start the catalogue service and enable line 46 # it to start on boot
+      name: catalogue
+      state: started
+      enabled: yes
+
+  - name: copy mongo repo
+    ansible.builtin.copy: # copy the MongoDB repository file to the yum repository directory
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb
+    ansible.builtin.dnf:  # install the MongoDB server package
+      name: mongodb-mongosh
+      state: present
+
+  - name: check products loaded or not # check if the 'catalogue' database loaded or not
+    ansible.builtin.command: mongosh --host mongodb.devops84.shop --eval 'db.getMongo().getDBNames().indexOf("catalogue")' # this command returns the index of the 'catalogue' database in the list of databases
+    register: catalogue_output
+
+  - name: print catalogue output # debug task to print the output of the previous command
+    ansible.builtin.debug:  # this will show the index of the 'catalogue' database, -1 means it does not exist
+      msg: "{{ catalogue_output }}" # this will print the output of the previous command line 71 lo registered in the variable 'catalogue_output'
+
+  - name: load products # if the 'catalogue' database does not exist, load the master data into it line 69-71
+    ansible.builtin.shell: mongosh --host mongodb.devops84.shop < /app/db/master-data.js # this command loads the master data into the 'catalogue' database 
+    #[shell command to execute beause speacial characters like '<']
+    when: catalogue_output.stdout | int < 0 # this condition checks if the index of the 'catalogue' database is less than 0, meaning it does not exist
