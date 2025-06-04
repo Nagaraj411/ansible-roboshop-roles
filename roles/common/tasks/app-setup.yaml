@@ -10,13 +10,13 @@
     home: /app
     system: true
 
-- name: download catalogue code
+- name: download "{{ component }}" code
   ansible.builtin.get_url: # download the catalogue code from the remote repository
-    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-    dest: /tmp/catalogue.zip
+    url: https://roboshop-artifacts.s3.amazonaws.com/"{{ component }}"-v3.zip
+    dest: /tmp/"{{ component }}".zip
 
-- name: unzip catalogue code
+- name: unzip "{{ component }}" code
   ansible.builtin.unarchive: # extract or unzip the downloaded zip file to the application directory
-    src: /tmp/catalogue.zip
+    src: /tmp/"{{ component }}".zip
     dest: /app
     remote_src: yes # this means the source file is already on the remote catalogue server
