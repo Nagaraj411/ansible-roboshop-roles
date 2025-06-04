@@ -1,8 +1,4 @@
-- name: configuring catalogue server
-  hosts: local
-  connection: local
-  become: yes
-  tasks:
+# This is the main task file for the catalogue role in the Ansible playbook
   - name: Disable the default nodejs module
     ansible.builtin.command: dnf module disable nodejs -y
 
