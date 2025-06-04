@@ -1,3 +1,8 @@
+- name: app setup 
+  include_role:
+    name: common
+    tasks_from: app-setup
+
 - name: Disable the default nodejs module
   ansible.builtin.command: dnf module disable nginx -y
 
