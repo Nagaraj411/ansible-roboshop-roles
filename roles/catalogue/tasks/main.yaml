@@ -38,7 +38,7 @@
       path: /app
 
   - name: Copy catalogue service file
-    ansible.builtin.copy: # copy the systemd service file for the catalogue application
+    ansible.builtin.template: # copy the systemd service file for the catalogue application
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
 
