@@ -1,0 +1,6 @@
+- name: configuring catalogue server
+  hosts: local
+  connection: local
+  become: yes
+  roles:
+  - catalogue
