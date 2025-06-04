@@ -1,6 +1,7 @@
-- name: configuring catalogue server
+- name: configuring "{{ component }}"
   hosts: local
   connection: local
   become: yes
   roles:
    - catalogue
+   - user
