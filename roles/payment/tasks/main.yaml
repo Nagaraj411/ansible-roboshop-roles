@@ -1,12 +1,12 @@
 - name: app setup
   include_role:
     name: common
-    tasks_from: app-setup
+    tasks_from: app-setup  # include common tasks for application setup
 
-- name: nodejs setup
+- name: python setup
   include_role:
     name: common
-    tasks_from: nodejs
+    tasks_from: python
 
 - name: systemd setup
   include_role:
