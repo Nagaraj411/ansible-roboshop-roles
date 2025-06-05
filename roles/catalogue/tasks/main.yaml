@@ -4,16 +4,15 @@
     name: common
     tasks_from: app-setup  # include common tasks for application setup
   
-- name: app setup 
+- name: nodejs setup 
   include_role:
     name: common
     tasks_from: nodejs  # include common tasks for Node.js setup
 
-- name: app setup 
+- name: systemd setup
   include_role:
     name: common
     tasks_from: systemd     
-
 
 - name: copy mongo repo
   ansible.builtin.copy: # copy the MongoDB repository file to the yum repository directory
