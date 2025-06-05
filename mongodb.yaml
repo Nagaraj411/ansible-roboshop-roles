@@ -1,7 +1,6 @@
-- name: configure mongodb
-  hosts: local
-  connection: local
-  become: true
-  roles: # this will automatically load a folder called roles in current working directory
-  - mongodb
+# - name: configure mongodb
+#   hosts: "{{ component }}"
+#   become: true
+#   roles: # this will automatically load a folder called roles in current working directory
+#   - "{{ component }}"
     
