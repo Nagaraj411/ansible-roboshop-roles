@@ -9,11 +9,6 @@
     name: common
     tasks_from: nodejs  # include common tasks for Node.js setup
 
-- name: systemd setup
-  include_role:
-    name: common
-    tasks_from: systemd     
-
 - name: copy mongo repo
   ansible.builtin.copy: # copy the MongoDB repository file to the yum repository directory
     src: mongo.repo
