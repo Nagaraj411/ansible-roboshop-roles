@@ -1,4 +1,4 @@
-- name: configuring {{ component }}
+- name: configuring "{{ component }}"
   hosts: "{{ component }}" # "{{ component }}"add component variable when instance is created
   become: yes
   roles: 
