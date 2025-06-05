@@ -1,7 +1,8 @@
 - name: Copy "{{ component }}" service file
   ansible.builtin.template: # copy the systemd service file for the catalogue application
+  # template module is used to different environment variables in the service file
     src: "{{ component }}.service.j2" # this is a Jinja2 template file for the service configuration
-    dest: /etc/systemd/system/cata"{{ component }}"logue.service
+    dest: /etc/systemd/system/"{{ component }}".service
 
 - name: systemctl daemon reload
   ansible.builtin.systemd_service: # daemon reload to recognize the new service file
