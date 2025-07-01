@@ -1,7 +1,5 @@
 - name: configuring "{{ component }}"
-  # hosts: "{{ component }}" # "{{ component }}"add component variable when instance is created
-  hosts: localhost
-  connection: local
+  hosts: "{{ component }}" # "{{ component }}"add component variable when instance is created
   become: yes
   roles: 
    - "{{ component }}"
