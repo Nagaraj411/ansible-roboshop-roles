@@ -27,8 +27,10 @@ The following components are implemented as individual Ansible roles:
 ## 🚀 How to Run
 
 1. 📥 Clone the repository:
+```bash
     git clone https://github.com/Nagaraj411/ansible-roboshop-roles.git
     cd ansible-roboshop-roles
 
 2. ▶️ Run the playbook:
+```bash
     ansible-playbook -i inventory roboshop.yml
