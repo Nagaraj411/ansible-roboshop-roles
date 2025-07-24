@@ -32,5 +32,5 @@ The following components are implemented as individual Ansible roles:
     cd ansible-roboshop-roles
 
 2. ▶️ Run the playbook:
-```bash
+
     ansible-playbook -i inventory roboshop.yml
