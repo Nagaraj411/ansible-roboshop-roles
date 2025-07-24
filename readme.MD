@@ -31,5 +31,5 @@ The following components are implemented as individual Ansible roles:
 git clone https://github.com/Nagaraj411/ansible-roboshop-roles.git
 cd ansible-roboshop-roles
 
-##▶️ Run the playbook
+▶️ Run the playbook
     ansible-playbook -i inventory roboshop.yml
